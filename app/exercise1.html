@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReactJs</title>
+
+    <!-- cdn of react, react-dom -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <!-- core logic -->
+    <script type="text/babel">
+        let list = [
+            { category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football" },
+            { category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball" },
+            { category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball" },
+            { category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch" },
+            { category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5" },
+            { category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7" }
+        ];
+
+        function categoryList() {
+            // first find the available cateries
+            let category = new Set(list.map(i => i.category));
+            
+            let categoryList = {};
+            category.forEach(i => {
+                categoryList[i] = list.filter(item => item.category == i);
+            });
+            return categoryList;
+        }
+
+        function CategoryList(props) {
+            let listItems = [];
+            if(props.text != '') {
+                listItems = props.list.filter(i => i.name.toLowerCase().includes(props.text.toLowerCase()))
+            } else {
+                listItems = props.list;
+            }
+            let list = listItems.map(i => {
+                if(!(props.stockProductsOnly && !i.stocked)) {
+                    return (
+                        (<tr>
+                            <td style={{color: i.stocked ? 'black': 'red'}}>{i.name}</td>
+                            <td>{i.price}</td>
+                        </tr>)
+                    )
+                }
+            })
+
+            return (
+                <>
+                    {list.length > 0 && <div style={{fontWeight: 'bold'}}> {props.list[0].category} </div>}
+                    {list}
+                </>
+            )
+        }
+
+        class List extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    text: '',
+                    stockProductsOnly: false
+                }
+                this.handleChange = this.handleChange.bind(this);
+            }
+
+            handleChange(event) {
+                let property = event.target.type === 'checkbox' ? 'stockProductsOnly' : 'text';
+                let value = property === 'stockProductsOnly' ? event.target.checked : event.target.value;
+                this.setState({ [property]: value });
+            } 
+
+            render() {
+                let list = categoryList();
+                let tableListItems = Object.values(list).map(i => { return (<CategoryList list={i} text={this.state.text} stockProductsOnly={this.state.stockProductsOnly}/>)} );
+                return (
+                    <>  
+                        <input placeHolder="Search..." value={this.state.text} onChange={this.handleChange}/>
+                        <div>
+                            <input type="checkbox" checked={this.state.stockProductsOnly} onChange={this.handleChange}/> Only show product in stock
+                        </div>
+                        <table>
+                            <tr>
+                                <th style={{textAlign: 'left'}}>Name</th>
+                                <th style={{textAlign: 'left'}}>Price</th>
+                            </tr>
+                            {tableListItems}
+                        </table>
+                    </>
+                )
+            }
+        }
+        
+        ReactDOM.render(<List />, document.getElementById('root'));
+    </script>
+</body>
+
+</html>
