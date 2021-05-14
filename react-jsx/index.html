@@ -23,13 +23,43 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // https://babeljs.io/repl
-        function App() {
+        // states are used to manage data
+        // In angular -> we have 2 way binding (main reason angular is popular)
+        // if we update any value in component, it will automatically reflect in template and vice-versa.
+        // this task is very difficult in simple js.
+        // html -> <input value=[text] oninput="handleOnChange"/>
+        // React doenn;t support 2 way binding
+        // There is only one way flow of data
+        
+        // what we want:
+        // there is varible in the component
+        // when we update the variable -> result should reflect on the screen
+
+        // react come up with the class component
+        // class Demo extends React.Component {
+            // constructor(props) {
+            //     super(props);
+            //     state = {
+            //          name: "himanshu"
+            //     }
+            // }
+
+            // render() {
+            //     return <div> {this.state.name} </div>
+            // }
+        // }
+        function handleOnClick() {
+            console.log(this)
+            console.log("Hello");
+        }
+        function App(props) {
+            console.log(props, this);
             // return React.createElement('div', { className: 'high', style: {color: 'red'}}, "Hello world!");
-            return <div className="high">Hello World from jsx!</div>
+
+            return <div className="high" onClick={props.handleOnClick.bind(this)}>Hello World from jsx {props.name}!</div>
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        ReactDOM.render(window.App({name: "Himanshu", handleOnClick: handleOnClick}), document.getElementById('root'));
 
     </script>
 </body>
