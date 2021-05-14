@@ -23,38 +23,26 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        // states are used to manage data
-        // In angular -> we have 2 way binding (main reason angular is popular)
-        // if we update any value in component, it will automatically reflect in template and vice-versa.
-        // this task is very difficult in simple js.
-        // html -> <input value=[text] oninput="handleOnChange"/>
-        // React doenn;t support 2 way binding
-        // There is only one way flow of data
-        
-        // what we want:
-        // there is varible in the component
-        // when we update the variable -> result should reflect on the screen
+        // react elements are immutable
+        // so how to update the UI -> just call render method
 
-        // react come up with the class component
-        class Demo extends React.Component {
-            constructor(props) {
-                super(props);
-                this.state = {
-                     name: "himanshu"
-                }
+        function tick() {
+            let element = (
+                <>
+                    <h1>Time:</h1>
+                    <div>{new Date().toLocaleTimeString()}</div>
+                </>
+            )
 
-                setTimeout(()=>{
-                    this.setState({name: "Kansal"})
-                }, 2000)
-            }
-            render() {
-                return <div> {this.state.name} </div>
-            }
+            ReactDOM.render(element, document.getElementById('root'));
         }
+        setInterval(tick, 1000);
         
-
-        ReactDOM.render(<Demo />, document.getElementById('root'));
-
+        // react only update whats is necessay
+        // When there is a data change in the component -> react rebuilt the same subtree
+        // Then compare the old tree with the new one, and find out the minimal changes, 
+        // do the minimal changes in the DOM.
+        
     </script>
 </body>
 
