@@ -36,30 +36,24 @@
         // when we update the variable -> result should reflect on the screen
 
         // react come up with the class component
-        // class Demo extends React.Component {
-            // constructor(props) {
-            //     super(props);
-            //     state = {
-            //          name: "himanshu"
-            //     }
-            // }
+        class Demo extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                     name: "himanshu"
+                }
 
-            // render() {
-            //     return <div> {this.state.name} </div>
-            // }
-        // }
-        function handleOnClick() {
-            console.log(this)
-            console.log("Hello");
+                setTimeout(()=>{
+                    this.setState({name: "Kansal"})
+                }, 2000)
+            }
+            render() {
+                return <div> {this.state.name} </div>
+            }
         }
-        function App(props) {
-            console.log(props, this);
-            // return React.createElement('div', { className: 'high', style: {color: 'red'}}, "Hello world!");
+        
 
-            return <div className="high" onClick={props.handleOnClick.bind(this)}>Hello World from jsx {props.name}!</div>
-        }
-
-        ReactDOM.render(window.App({name: "Himanshu", handleOnClick: handleOnClick}), document.getElementById('root'));
+        ReactDOM.render(<Demo />, document.getElementById('root'));
 
     </script>
 </body>
