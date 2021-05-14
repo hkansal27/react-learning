@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React</title>
+
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        class App extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    count: 0
+                }
+            }
+            
+            clickHandler() {
+                console.log('click handler')
+                this.setState((prevState) => ({
+                    count: prevState.count + 1
+                }));
+            }
+            render() {
+                return (
+                    <>
+                        <div>{this.state.count}</div>
+                        <button onClick={this.clickHandler.bind(this)}>Click me!</button>
+                    </>)
+                    // jsx -> check it is a html tag or not?
+                    // yes -> html button tag
+                    // match jsx onClick property -> register html click property with the callback function
+                    // UI -> html button 
+                    // event click -> in that execution context there is not this.
+                    // so we have to bind this explicitly
+            }
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
